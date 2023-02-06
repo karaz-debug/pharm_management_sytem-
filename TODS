@@ -1,0 +1,21 @@
+24/JAN/2022 - TUESDAY
+
+1.----- Done the user Registration = DONE
+2.----- Set up the mongoDB connection = DONE
+3.----- Connect my server to the database = DONE
+4.----- Some to user Login = DONE
+5.----- Do authentication of the user = DONE
+6.----- and latter authourization - only allow if the user have certain token then he can do all the event he need like different acccess he can do = DONE
+7.----- if user login as an admin then we need to navigate him directly to the /admin content only = DONE
+
+In your server-side middleware, check for the presence of the JWT token in the Authorization header and verify it using the jsonwebtoken package and the secret key. If the token is valid, proceed with the request. If it is not valid, return a 401 Unauthorized response.
+
+6 FEB - MONDAY
+TODOS :
+
+1.0 : we need to give an access for admin in order to login after soon he register = NOT DONE - By making the status active only
+2.0 : Integrate the stock part management API and make all the API'S It need
+2.1 : Work on Drug management All API's needed
+2.2 : Work on User management All API's needed
+3.0 : Fix the table of stock , drug and category
+3.1 : Design Up the Report Management section

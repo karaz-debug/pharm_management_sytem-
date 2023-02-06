@@ -1,0 +1,76 @@
+#modal {
+    position: fixed;
+    top: 10%;
+    left: 30%;
+    right: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(193 191 229 / 50%);
+    z-index: 1;
+}
+
+.notification {
+    position: fixed;
+    top: 8.5%;
+    left: 30%;
+    right: 50%;
+    width: 50%;
+    z-index: 1;
+}
+
+/* position: absolute; */
+/* top: 70px; */
+/* change this value to the height of your header */
+/* width: 100%; */
+
+
+
+
+
+
+
+.canva {
+    display: block;
+    box-sizing: border-box;
+    height: 284px;
+    width: 440;
+
+}
+
+.footers {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+
+
+
+/* .parent-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    min-height: calc(100vh - 50px);
+
+    overflow-y: scroll;
+} */
+
+
+::-webkit-scrollbar {
+    width: 0.2em;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #000000;
+}
