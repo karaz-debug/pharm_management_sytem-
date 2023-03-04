@@ -8,8 +8,9 @@ const auth = (req, res, next) => {
             message: 'Access denied. No token provided.'
         });
     }
+
     try {
-        let secretKey = "165371566132632461543261543516426184721abghdghjsvdbn"
+        const secretKey = "165371566132632461543261543516426184721abghdghjsvdbn";
         const decoded = jwt.verify(token, secretKey);
         req.user = decoded;
         next();

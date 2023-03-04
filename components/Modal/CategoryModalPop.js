@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -55,35 +55,60 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function CategoryModalPop({ isOpen, onClose }) {
-    const [category, setCategory] = useState({
-        Name: '',
-        Description: '',
-    })
+function CategoryModalPop({ isOpen, onClose, selectedCategory }) {
+    const [category, setCategory] = useState({});
 
-    const [image, setImage] = useState({
-        imagePic: null,
-    })
+    useEffect(() => {
+        if (selectedCategory) {
+            setCategory({
+                Name: selectedCategory.Name || '',
+                Description: selectedCategory.Description || '',
+
+            });
+        } else {
+            setCategory({
+                Name: '',
+                Description: '',
+            });
+        }
+    }, [selectedCategory]);
 
     const handleChange = (event) => {
         const { name, value } = event.target
-        setImage({
-            ...image,
-            imagePic: event.target.files[0],
+        setCategory({
+            ...category,
+            [name]: value
         })
-        setStock({
-            ...setCategory,
-            [name]: value,
-            profile
-        })
+
     }
 
-
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        // Send the stock data to the server or perform other logic here
-        console.log(category)
-        onClose(false);
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            let response;
+            let method;
+            let url;
+            if (selectedCategory) {
+                method = 'PUT';
+                url = `http://localhost:3001/admin/category/${selectedCategory._id}`;
+            } else {
+                method = 'POST';
+                url = 'http://localhost:3001/admin/category';
+            }
+            response = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(category),
+            });
+            const data = await response.json();
+            console.log(data);
+            onClose(false);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
 
@@ -103,8 +128,8 @@ function CategoryModalPop({ isOpen, onClose }) {
                         <TextField
                             margin="dense"
                             id="Name"
-                            name="name"
-                            label="Name"
+                            name="Name"
+                            label="Category name"
                             type="text"
                             fullWidth
                             onChange={handleChange}
@@ -117,6 +142,7 @@ function CategoryModalPop({ isOpen, onClose }) {
                             label="Description"
                             type="text"
                             fullWidth
+                            onChange={handleChange}
                             value={category.Description}
                         />
 
@@ -138,7 +164,7 @@ function CategoryModalPop({ isOpen, onClose }) {
                         </div>
                         <div>
                             <Button type="submit" onClick={handleSubmit} className={useStyles.button} color="primary">
-                                Add
+                                {selectedCategory ? 'Edit' : 'Add'}
                             </Button>
                         </div>
                     </div>

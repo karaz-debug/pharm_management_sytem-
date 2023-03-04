@@ -4,20 +4,14 @@ import DrugModalPop from "../Modal/DrugModalPop";
 import ModalPop from "../Modal/DrugModalPop";
 import SearchBar from "../SearchBar";
 import DrugTable from "../Table/DrugTable";
+import InvoiceTable from "../Table/InvoiceTable";
 import TableContent from "../TableContent";
 
-function DrugMainContent() {
-    // Remaining Features  of UI
-    // 1.A Neet Table Remaining using Material UI
-    // 2.Adding Drugs By Uploading them Through Excell sheet
-
-    const [category, setCategory] = useState(false);
-    const [addDrug, setAddDrug] = useState(false);
-
+function InvoiceMainContent() {
     return (
         <div>
             <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold">Manage Medicine</h2>
+                <h2 className="text-xl font-semibold">Manage Invoices</h2>
                 <div className="flex items-center space-x-2">
                     <button className="p-2 bg-green-500 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white" viewBox="0 0 20 20" fill="currentColor">
@@ -38,57 +32,35 @@ function DrugMainContent() {
                     <input
                         className="float-left w-[300px] px-4 py-3 mt-8 mb-4 leading-tight text-gray-700  border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
                         type="text"
-                        placeholder="By Supplier Name"
+                        placeholder="By Invoice Number"
                     />
                 </div>
                 <div>
                     <input
                         className="float-left w-[300px] px-4 py-3 mt-8 mb-4 leading-tight text-gray-700  border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
                         type="number"
-                        placeholder="Batch ID"
+                        placeholder="By Customer Number"
                     />
                 </div>
-                <button className="px-4 py-3 mt-8 mb-4 bg-red-500 rounded-lg ">
-                    Out of Stock
-                </button>
-                <button className="px-4 py-3 mt-8 mb-4 bg-yellow-500 rounded-lg">
-                    Expired
-                </button>
+                <div className="flex items-center justify-center gap-3">
+                    <label class=" text-gray-700 font-bold mb-2" for="date">
+                        By Invoice Date:
+                    </label>
+                    <input
+                        className="float-left w-[300px] px-4 py-3 mt-8 mb-4 leading-tight text-gray-700  border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
+                        type="date"
 
-                <div className="flex items-center">
-                    <div className="relative flex items-center mx-6 align-baseline">
-                        <button
-                            className="px-4 pb-2 bg-white border btn border-slate-200 hover:border-slate-300 text-slate-500 hover:text-slate-600"
-                        >
-
-                            <svg className="w-4 h-4 fill-current" viewBox="0 0 16 16">
-                                <path d="M9 15H7a1 1 0 010-2h2a1 1 0 010 2zM11 11H5a1 1 0 010-2h6a1 1 0 010 2zM13 7H3a1 1 0 010-2h10a1 1 0 010 2zM15 3H1a1 1 0 010-2h14a1 1 0 010 2z"></path>
-                            </svg>
-                        </button>
-
-                        {category && (
-                            <>
-                                <CategoryModal />
-                            </>
-                        )}
-                    </div>
-
+                    />
                 </div>
-
-                {/* End Filter */}
-            </div>
-
-            <div className="flex justify-start gap-3 mb-3 align-baseline">
-
-
 
             </div>
 
             {/* Table content */}
-            <DrugTable />
+            <InvoiceTable />
 
         </div>
     );
 }
 
-export default DrugMainContent;
+export default InvoiceMainContent;
+

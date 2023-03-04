@@ -21,7 +21,7 @@ const AdminLayout = ({ children }) => {
             <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
             <main className="">{children}</main>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     )
 

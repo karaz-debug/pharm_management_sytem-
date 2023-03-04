@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import CategoryModal from '../CategoryModal';
 import CategoryModalPop from '../Modal/CategoryModalPop';
 import SearchBar from '../SearchBar';
+import CategoryTable from '../Table/CategoryTable';
 import TableContent from '../TableContent'
 import WelcomeBanner from '../WelcomeBanner'
 
@@ -52,7 +53,7 @@ function CategoryContent() {
                 {/* Add Button */}
 
             </div>
-            <TableContent />
+            <CategoryTable />
         </div>
     )
 }

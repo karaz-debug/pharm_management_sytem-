@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -49,26 +49,73 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function ModalPop({ isOpen, onClose }) {
+function DrugModalPop({ isOpen, onClose, selectedDrug }) {
+
+    const classes = useStyles();
 
     const [drug, setDrug] = useState({
         name: '',
         dosage: '',
         quantity: '',
-        company: '',
+        manufucture: '',
         category: ''
     });
 
-    const classes = useStyles();
+
+
+    useEffect(() => {
+        if (selectedDrug) {
+            setDrug({
+                name: selectedDrug.name || '',
+                dosage: selectedDrug.dosage || '',
+                quantity: selectedDrug.quantity || '',
+                manufucture: selectedDrug.manufucture || '',
+                category: selectedDrug.category || '',
+            });
+        } else {
+            setDrug({
+                name: '',
+                dosage: '',
+                quantity: '',
+                category: '',
+                manufucture: ''
+            });
+        }
+    }, [selectedDrug]);
+
+
     const handleChange = (event) => {
         setDrug({ ...drug, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(drug)
-        // add code here to submit the drug data to the pharmacy management system
-        onClose(false);
+        try {
+            let response;
+            let method;
+            let url;
+            if (selectedDrug) {
+                method = 'PUT';
+                url = `http://localhost:3001/admin/drug/${selectedDrug._id}`;
+            } else {
+                method = 'POST';
+                url = 'http://localhost:3001/admin/drug';
+            }
+            response = await fetch(url, {
+                method,
+
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(drug),
+            });
+            const data = await response.json();
+            console.log(data);
+            onClose(false);
+        } catch (err) {
+            console.error(err);
+        }
     };
 
 
@@ -122,7 +169,7 @@ function ModalPop({ isOpen, onClose }) {
                             type="text"
                             fullWidth
                             onChange={handleChange}
-                            value={drug.company}
+                            value={drug.manufucture}
                         />
 
                         <FormControl sx={{ mt: 2, minWidth: 250 }} size="small" className={useStyles.formControl}>
@@ -148,13 +195,13 @@ function ModalPop({ isOpen, onClose }) {
 
                     <div className="flex gap-20 mt-4">
                         <div>
-                            <Button onClick={onClose} className={classes.button} color="primary" >
+                            <Button onClick={onClose} className={useStyles.button} color="primary" >
                                 Cancel
                             </Button>
                         </div>
                         <div>
-                            <Button type="submit" onClick={handleSubmit} className={classes.button} color="primary">
-                                Add
+                            <Button type="submit" onClick={handleSubmit} className={useStyles.button} color="primary">
+                                {selectedDrug ? ' Edit' : 'Add'}
                             </Button>
                         </div>
                     </div>
@@ -165,4 +212,4 @@ function ModalPop({ isOpen, onClose }) {
     );
 }
 
-export default ModalPop;
+export default DrugModalPop;

@@ -1,8 +1,7 @@
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { makeStyles } from '@material-ui/styles';
 import { Button, FormControl, Input, InputLabel, MenuItem, Select, TextField } from '@mui/material';
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     button: {
-        marginTop: 8,
+        marginTop: 4,
         backgroundColor: '#00bcd4',
         '&:hover': {
             backgroundColor: '#ffa500',
@@ -51,17 +50,34 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function StockModal({ isOpen, onClose }) {
-    const [stock, setStock] = useState({
-        ExpiryDate: '',
-        PurchasePrice: '',
-        ReceivedBy: '',
-        Location: '',
-        ReceivedDate: '',
-        Description: '',
-        supplier: '',
+function StockModal({ isOpen, onClose, selectedStock }) {
 
-    })
+    const [stock, setStock] = useState({});
+
+
+    useEffect(() => {
+        if (selectedStock) {
+            setStock({
+                ExpiryDate: selectedStock.ExpiryDate || '',
+                PurchasePrice: selectedStock.PurchasePrice || '',
+                ReceivedBy: selectedStock.ReceivedBy || '',
+                Location: selectedStock.Location || '',
+                ReceivedDate: selectedStock.ReceivedDate || '',
+                Description: selectedStock.Description || '',
+                Supplier: selectedStock.Supplier || '',
+            });
+        } else {
+            setStock({
+                ExpiryDate: '',
+                PurchasePrice: '',
+                ReceivedBy: '',
+                Location: '',
+                ReceivedDate: '',
+                Description: '',
+                Supplier: '',
+            });
+        }
+    }, [selectedStock]);
 
     const handleChange = (event) => {
         const { name, value } = event.target
@@ -71,18 +87,24 @@ function StockModal({ isOpen, onClose }) {
         })
     }
 
-    console.log(stock)
-
-
-
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch('http://localhost:3001/admin/stock', {
-                method: 'POST',
+            let response;
+            let method;
+            let url;
+            if (selectedStock) {
+                method = 'PUT';
+                url = `http://localhost:3001/admin/stock/${selectedStock._id}`;
+            } else {
+                method = 'POST';
+                url = 'http://localhost:3001/admin/stock';
+            }
+            response = await fetch(url, {
+                method,
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(stock),
             });
@@ -92,13 +114,12 @@ function StockModal({ isOpen, onClose }) {
         } catch (err) {
             console.error(err);
         }
-        onClose(false);
     };
 
 
 
     return (
-        <div>
+        <div className="mt-10">
             <Modal
                 open={isOpen}
                 onClose={onClose}
@@ -154,7 +175,7 @@ function StockModal({ isOpen, onClose }) {
                             margin="dense"
                             id="Location"
                             name="Location"
-                            label="Location"
+                            label="Location Stored"
                             type="text"
                             fullWidth
                             onChange={handleChange}
@@ -175,7 +196,19 @@ function StockModal({ isOpen, onClose }) {
                             value={stock.Description}
                         />
 
-                        <FormControl sx={{ mt: 2, minWidth: 250 }} size="small" className={useStyles.formControl}>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="Supplier"
+                            name="Supplier"
+                            label="Supplier"
+                            type="text"
+                            fullWidth
+                            onChange={handleChange}
+                            value={stock.Supplier}
+                        />
+
+                        {/* <FormControl sx={{ mt: 2, minWidth: 250 }} size="small" className={useStyles.formControl}>
                             <InputLabel id="demo-select-small">Supplier</InputLabel>
                             <Select
                                 labelId="demo-select-small"
@@ -188,11 +221,11 @@ function StockModal({ isOpen, onClose }) {
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={Ahmed}>Ahmed</MenuItem>
-                                <MenuItem value={ALi_Baba}>ALi Baba</MenuItem>
-                                <MenuItem value={Charpie_Chablin}>Charpie Chablin</MenuItem>
+                                <MenuItem value={stock.supplier}>Ahmed</MenuItem>
+                                <MenuItem value={stock.supplier}>ALi Baba</MenuItem>
+                                <MenuItem value={stock.supplier}>Charpie Chablin</MenuItem>
                             </Select>
-                        </FormControl>
+                        </FormControl> */}
 
                     </form>
 
@@ -204,7 +237,7 @@ function StockModal({ isOpen, onClose }) {
                         </div>
                         <div>
                             <Button type="submit" onClick={handleSubmit} className={useStyles.button} color="primary">
-                                Add
+                                {selectedStock ? ' Edit' : 'Add'}
                             </Button>
                         </div>
                     </div>
