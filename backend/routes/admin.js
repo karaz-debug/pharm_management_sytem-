@@ -107,35 +107,21 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Stock Post API
+// Stock POST Api
 router.post('/stock', async (req, res) => {
-    const { fieldsData, rows } = req.body;
-    // console.log('fieldsData:', fieldsData);
-    // console.log('rows:', rows);
     try {
-        const {
-            selectedSupplier,
-            invoiceNumber,
-            paymentType,
-            date,
-        } = fieldsData;
-
-        const medicines = rows.map((row) => ({
-            medicineName: row.medicineName,
-            packaging: row.packaging,
-            batchID: row.batchID,
-            expiryDate: row.expiryDate,
-            rate: row.rate,
-            amount: row.amount
-        }));
-
+        const { selectedSupplier, invoiceNumber, paymentType, date, rows, amount } = req.body;
+        // Create the new Stock object
         const newStock = new Stock({
             selectedSupplier,
             invoiceNumber,
             paymentType,
             date,
-            medicines
+            amount,
+            rows,
+
         });
+
 
         await newStock.save();
 
@@ -602,7 +588,7 @@ router.delete("/customer/:id", verifyToken, async (req, res) => {
 // Create an invoice
 router.post('/invoice', async (req, res) => {
     try {
-        const { invoiceNumber, customer, paymentType, date, contact, total, items, paid, change } = req.body;
+        const { invoiceNumber, customer, paymentType, date, contact, total, discount, items, paid, change } = req.body;
 
         // Calculate the netTotal for each item
         const itemsWithNetTotal = items.map(item => {
@@ -618,6 +604,7 @@ router.post('/invoice', async (req, res) => {
             date,
             contact,
             total,
+            discount,
             items: itemsWithNetTotal,
             paid,
             change
@@ -634,8 +621,10 @@ router.post('/invoice', async (req, res) => {
 });
 
 
+
+
 // Get Customer
-router.get('/invoice', async (req, res) => {
+router.get('/invoices', async (req, res) => {
     try {
         let invoices = await Invoice.find({});
 
@@ -650,7 +639,7 @@ router.get('/invoice', async (req, res) => {
     }
 });
 
-router.get('/invoices/:id', async (req, res) => {
+router.get('/invoice/:id', async (req, res) => {
     try {
         const invoice = await Invoice.findById(req.params.id);
         if (!invoice) {
@@ -662,5 +651,33 @@ router.get('/invoices/:id', async (req, res) => {
         return res.status(500).json({ error: 'Server error' });
     }
 });
+
+// Edit Customer
+router.put('/invoice/:id', verifyToken, (req, res) => {
+    Invoice.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, invoice) => {
+        if (err) {
+            return res.status(400).json({ error: 'Failed to update Customer' });
+        }
+        res.json(invoice);
+    });
+});
+
+// Delete the Customer
+router.delete("/invoice/:id", verifyToken, async (req, res) => {
+    try {
+
+        const invoice = await Invoice.findByIdAndDelete(req.params.id);
+        if (!invoice) {
+            res.status(404).send("Invoice entry not found");
+
+        } else {
+            return res.status(200).json({ result: 'Succesfully deleted invoice' });
+        }
+    } catch (err) {
+        res.sendStatus(401);
+    }
+});
+
+
 module.exports = router;
 

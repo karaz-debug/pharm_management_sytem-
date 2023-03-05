@@ -25,6 +25,11 @@ const invoiceSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    discount: {
+        type: Number,
+        required: true
+    },
+
     items: {
         type: Array,
         required: true

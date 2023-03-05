@@ -5,16 +5,17 @@ import { useSelector } from 'react-redux';
 
 const InvoiceTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [invocesPerPagge] = useState(5);
+    const [invocesPerPagge] = useState(500);
     const [Invoces, setInvoces] = useState([]);
+    const [error, setError] = useState("")
 
 
 
     useEffect(() => {
         const fetchInvoces = async () => {
             try {
-                const { data } = await axios.get('http://localhost:3001/admin/invoice');
-                setInvoces(data.Invoces);
+                const { data } = await axios.get('http://localhost:3001/admin/invoices');
+                setInvoces(data.invoices);
             } catch (error) {
                 console.error(error);
             }
@@ -147,6 +148,9 @@ const InvoiceTable = () => {
                                 Date
 
                             </th>
+                            <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">
+                                Total Discount
+                            </th>
 
 
                             <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">
@@ -155,9 +159,7 @@ const InvoiceTable = () => {
                             <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">
                                 Paid
                             </th>
-                            <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">
-                                Total Discount
-                            </th>
+
                             <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase">
                                 Actions
                             </th>
@@ -171,7 +173,7 @@ const InvoiceTable = () => {
                                     {editingRow === invoice._id ? (<input
                                         type="text"
                                         name="name"
-                                        className={`w-full border border-gray-300 px-3 py-2 ${editingRow === drug._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
+                                        className={`w-full border border-gray-300 px-3 py-2 ${editingRow === invoice._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
                                         value={medicineField.name}
                                         onChange={handleFieldChange}
                                     />
@@ -184,7 +186,7 @@ const InvoiceTable = () => {
                                         <input
                                             type="text"
                                             name="dosage"
-                                            className={`w-full border border-gray-300 px-3 py-2 ${editingRow === drug._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
+                                            className={`w-full border border-gray-300 px-3 py-2 ${editingRow === invoice._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
                                             value={medicineField.dosage}
                                             onChange={handleFieldChange}
                                         />
@@ -197,7 +199,7 @@ const InvoiceTable = () => {
                                         <input
                                             type="text"
                                             name="quantity"
-                                            className={`w-full border border-gray-300 px-3 py-2 ${editingRow === drug._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
+                                            className={`w-full border border-gray-300 px-3 py-2 ${editingRow === invoice._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
                                             value={medicineField.quantity}
                                             onChange={handleFieldChange}
                                         />
@@ -206,11 +208,24 @@ const InvoiceTable = () => {
                                     )}
                                 </td>
                                 <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                    {editingRow === invoice._id ? (<input
+                                        type="text"
+                                        name="Supplier"
+                                        className={`w-full border border-gray-300 px-3 py-2 ${editingRow === invoice._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
+                                        value={medicineField.Supplier}
+                                        onChange={handleFieldChange}
+                                    />
+                                    ) : (
+                                        invoice.discount
+                                    )}
+
+                                </td>
+                                <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                     {editingRow === invoice._id ? (
                                         <input
                                             type="text"
                                             name="manufucture"
-                                            className={`w-full border border-gray-300 px-3 py-2 ${editingRow === drug._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
+                                            className={`w-full border border-gray-300 px-3 py-2 ${editingRow === invoice._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
                                             value={medicineField.manufucture}
                                             onChange={handleFieldChange}
                                         />
@@ -219,10 +234,10 @@ const InvoiceTable = () => {
                                     )}
                                 </td>
                                 <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                                    {editingRow === drug._id ? (<input
+                                    {editingRow === invoice._id ? (<input
                                         type="text"
                                         name="category"
-                                        className={`w-full border border-gray-300 px-3 py-2 ${editingRow === drug._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
+                                        className={`w-full border border-gray-300 px-3 py-2 ${editingRow === invoice._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
                                         value={medicineField.category}
                                         onChange={handleFieldChange}
                                     />
@@ -231,19 +246,7 @@ const InvoiceTable = () => {
                                     )}
 
                                 </td>
-                                <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                                    {editingRow === invoice._id ? (<input
-                                        type="text"
-                                        name="Supplier"
-                                        className={`w-full border border-gray-300 px-3 py-2 ${editingRow === drug._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
-                                        value={medicineField.Supplier}
-                                        onChange={handleFieldChange}
-                                    />
-                                    ) : (
-                                        invoice.total - invoice.paid
-                                    )}
 
-                                </td>
                                 <td className="px-6 py-4 text-sm font-medium text-right">
                                     {editingRow === invoice._id ? (
                                         <div className="flex items-center justify-end space-x-2">
@@ -263,18 +266,15 @@ const InvoiceTable = () => {
                                     ) : (
                                         <div className="flex items-center justify-end space-x-2">
                                             <button
-                                                className="mr-4 text-indigo-600 hover:text-indigo-900"
-                                                onClick={() => handleEdit(invoice)}
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                className="text-red-600 hover:text-red-900"
+                                                className="p-2 text-red-600 rounded-full hover:text-red-900 hover:bg-red-100 focus:outline-none focus:bg-red-100 focus:text-red-900"
                                                 onClick={() => handleDelete(invoice._id)}
                                             >
-                                                Delete
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
                                             </button>
                                         </div>
+
                                     )}
                                 </td>
                             </tr>

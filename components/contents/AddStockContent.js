@@ -123,67 +123,107 @@ const AddStockContent = () => {
         setRows(newRows);
     };
 
-    function handleSaveForm(event) {
-        event.preventDefault(); // prevent default form submission
+    // function handleSaveForm(event) {
+    //     event.preventDefault(); // prevent default form submission
 
-        const fieldsData = {
-            selectedSupplier,
-            invoiceNumber,
-            paymentType,
-            date,
-        };
+    //     const fieldsData = {
+    //         selectedSupplier,
+    //         invoiceNumber,
+    //         paymentType,
+    //         date,
+    //     };
 
-        setFormData({
-            ...formData,
-            fieldsData
-        })
+    //     setFormData({
+    //         ...formData,
+    //         fieldsData
+    //     })
 
-    }
+    // }
 
     // Add handle submit fully implemented
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const newRows = rows.map((row, i) => {
-            return {
-                ...row,
-                batchID: drugrData.BatchID,
-            };
-        });
-        setRows(newRows);
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     const newRows = rows.map((row, i) => {
+    //         return {
+    //             ...row,
+    //             batchID: drugrData.BatchID,
+    //         };
+    //     });
+    //     setRows(newRows);
 
-        if (newRows) {
-            setFormData({
-                ...formData,
-                rows
-            })
-        }
+    //     if (newRows) {
+    //         setFormData({
+    //             ...formData,
+    //             rows
+    //         })
+    //     }
+
+    //     try {
+    //         const response = await fetch('http://localhost:3001/admin/stock', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify(formData)
+    //         });
+
+    //         const result = await response.json();
+
+    //         console.log(result);
+
+    //         // reset the form fields
+    //         setSelectedSupplier("");
+    //         setInvoiceNumber("");
+    //         setPaymentType("");
+    //         setDate("");
+    //         setRows([{ medicineName: "", packaging: "", batchID: "", expiryDate: "", rate: "", amount: "" }]);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+
+    //     console.log("this total form data ", formData);
+
+    // }
+
+    const handleGenerateStock = async () => {
 
         try {
-            const response = await fetch('http://localhost:3001/admin/stock', {
-                method: 'POST',
+            // Create invoice object
+            const stockObj = {
+                selectedSupplier,
+                invoiceNumber: invoiceNumber,
+                paymentType,
+                date,
+                amount: rows.reduce((acc, row) => acc + row.amount, 0),
+                items: rows,
+
+            };
+
+            console.log("stock object b4 sumbit", stockObj)
+
+            // Send invoice to backend
+            const response = await fetch("http://localhost:3001/admin/stock", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(invoiceObj),
             });
 
-            const result = await response.json();
-
-            console.log(result);
-
+            const data = await response.json();
+            setInvoice(data);
             // reset the form fields
-            setSelectedSupplier("");
+            setSelectedCustomer("");
             setInvoiceNumber("");
             setPaymentType("");
             setDate("");
+            setContact("")
             setRows([{ medicineName: "", packaging: "", batchID: "", expiryDate: "", rate: "", amount: "" }]);
-        } catch (error) {
-            console.error(error);
+            console.log(invoice, "and data", data)
+        } catch (err) {
+            console.log(err);
         }
-
-        console.log("this total form data ", formData);
-
-    }
+    };
 
     return (
         <div className="p-4">
@@ -205,7 +245,7 @@ const AddStockContent = () => {
 
             <hr className="my-4 border-red-500" />
             <div class="p-8">
-                <form className="grid grid-cols-3 gap-4" onSubmit={handleSaveForm}>
+                <form className="grid grid-cols-3 gap-4">
                     <div className="block mb-4">
                         <label
                             className="block mb-2 font-bold text-gray-700"
@@ -277,11 +317,7 @@ const AddStockContent = () => {
                             onChange={(e) => setDate(e.target.value)}
                         />
                     </div>
-                    <div className="flex justify-center mt-2 pt-7">
-                        <button type="submit" className="w-1/4 h-10 text-white bg-blue-500 rounded-lg focus:outline-none" >
-                            Save
-                        </button>
-                    </div>
+
                 </form>
             </div>
 
@@ -415,7 +451,7 @@ const AddStockContent = () => {
             <br />
 
             <div className="flex flex-col float-right">
-                <button onClick={handleSubmit} className="w-24 py-2 text-white bg-blue-500 focus:outline-none">
+                <button onClick={handleGenerateStock} className="w-24 py-2 text-white bg-blue-500 focus:outline-none">
                     Add
                 </button>
             </div>

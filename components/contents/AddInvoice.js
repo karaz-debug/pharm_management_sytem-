@@ -275,6 +275,7 @@ const AddInvoice = () => {
                 date,
                 contact,
                 total: rows.reduce((acc, row) => acc + row.netTotal, 0),
+                discount: rows.reduce((acc, row) => acc + row.discount, 0),
                 items: rows,
                 paid,
                 change,
