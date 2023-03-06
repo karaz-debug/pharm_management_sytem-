@@ -6,6 +6,7 @@ const AddStockContent = () => {
     const [drugs, setDrugs] = useState([]);
     const [selectedDrug, setSelectedDrug] = useState("");
     const [drugrData, setDrugData] = useState({});
+    const [stock, setStock] = useState([])
 
     const [selectedSupplier, setSelectedSupplier] = useState("");
     const [invoiceNumber, setInvoiceNumber] = useState("");
@@ -186,20 +187,16 @@ const AddStockContent = () => {
     // }
 
     const handleGenerateStock = async () => {
-
         try {
             // Create invoice object
             const stockObj = {
-                selectedSupplier,
+                selectedSupplier: selectedSupplier, // add selectedSupplier field
                 invoiceNumber: invoiceNumber,
-                paymentType,
-                date,
+                paymentType: paymentType,
+                date: date, // add date field
                 amount: rows.reduce((acc, row) => acc + row.amount, 0),
                 items: rows,
-
             };
-
-            console.log("stock object b4 sumbit", stockObj)
 
             // Send invoice to backend
             const response = await fetch("http://localhost:3001/admin/stock", {
@@ -207,23 +204,23 @@ const AddStockContent = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(invoiceObj),
+                body: JSON.stringify(stockObj),
             });
 
             const data = await response.json();
-            setInvoice(data);
+            setStock(data);
             // reset the form fields
-            setSelectedCustomer("");
+            setSelectedSupplier("");
             setInvoiceNumber("");
             setPaymentType("");
             setDate("");
-            setContact("")
             setRows([{ medicineName: "", packaging: "", batchID: "", expiryDate: "", rate: "", amount: "" }]);
             console.log(invoice, "and data", data)
         } catch (err) {
             console.log(err);
         }
     };
+
 
     return (
         <div className="p-4">
@@ -317,7 +314,6 @@ const AddStockContent = () => {
                             onChange={(e) => setDate(e.target.value)}
                         />
                     </div>
-
                 </form>
             </div>
 

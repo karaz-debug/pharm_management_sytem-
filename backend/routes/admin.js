@@ -110,7 +110,7 @@ router.post('/login', async (req, res) => {
 // Stock POST Api
 router.post('/stock', async (req, res) => {
     try {
-        const { selectedSupplier, invoiceNumber, paymentType, date, rows, amount } = req.body;
+        const { selectedSupplier, invoiceNumber, paymentType, date, items, amount } = req.body;
         // Create the new Stock object
         const newStock = new Stock({
             selectedSupplier,
@@ -118,7 +118,7 @@ router.post('/stock', async (req, res) => {
             paymentType,
             date,
             amount,
-            rows,
+            items,
 
         });
 
@@ -146,10 +146,6 @@ router.get('/stock', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
-
-
-
-
 
 // Delete the Stock
 router.delete("/stock/:id", verifyToken, async (req, res) => {

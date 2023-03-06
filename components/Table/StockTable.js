@@ -138,7 +138,6 @@ const StockTable = () => {
 
 
 
-
     return (
         <div>
             <div className="overflow-hidden overflow-x-scroll border rounded-lg">
@@ -223,10 +222,10 @@ const StockTable = () => {
                                             onChange={handleFieldChange}
                                         />
                                     ) : (
-                                        stock.medicines.map((medico, index) => (
-                                            <span key={medico._id} style={{ marginRight: '0.5rem' }}>
-                                                {medico.medicineName.length > 10 ? medico.medicineName.slice(0, 5) + '...,' : medico.medicineName}
-                                                {index === stock.medicines.length - 1 ? `(${stock.medicines.length})` : null}
+                                        stock.items?.map((item, index) => (
+                                            <span key={item._id} style={{ marginRight: '0.5rem' }}>
+                                                {item.medicineName.length > 10 ? item.medicineName.slice(0, 5) + '...,' : item.medicineName}
+                                                {index === stock.items?.length - 1 ? `(${stock.items?.length})` : null}
                                             </span>
                                         ))
                                     )}
@@ -240,7 +239,8 @@ const StockTable = () => {
                                         onChange={handleFieldChange}
                                     />
                                     ) : (
-                                        moment(stock.medicines.ExpiryDate).format('MMM DD, YYYY')
+
+                                        moment(stock.medicines?.ExpiryDate).format('MMM DD, YYYY')
                                     )}
                                 </td>
 
@@ -254,7 +254,7 @@ const StockTable = () => {
                                             onChange={handleFieldChange}
                                         />
                                     ) : (
-                                        stock.medicines.map((medico) => (
+                                        stock.medicines?.map((medico) => (
                                             <span key={medico._id} style={{ marginRight: '0.5rem' }}>
                                                 {medico.packaging.length > 1 ? medico.packaging.slice(0, 3) + ',' : medico.packaging}
                                             </span>
@@ -271,9 +271,9 @@ const StockTable = () => {
                                             onChange={handleFieldChange}
                                         />
                                     ) : (
-                                        stock.medicines.map((medico) => (
-                                            <span key={medico._id} style={{ marginRight: '0.5rem' }}>
-                                                {medico.amount.length > -1 ? medico.amount.slice(0, 3) + '..,' : medico.amount}
+                                        stock.items?.map((item) => (
+                                            <span key={item._id} style={{ marginRight: '0.5rem' }}>
+                                                {item.amount.length > -1 ? item.amount.slice(0, 3) + '..,' : item.amount}
                                             </span>
                                         ))
 
@@ -303,12 +303,16 @@ const StockTable = () => {
                                             >
                                                 Edit
                                             </button>
-                                            <button
-                                                className="text-red-600 hover:text-red-900"
-                                                onClick={() => handleDelete(stock._id)}
-                                            >
-                                                Delete
-                                            </button>
+                                            <div className="flex items-center justify-end space-x-2">
+                                                <button
+                                                    className="p-2 text-red-600 rounded-full hover:text-red-900 hover:bg-red-100 focus:outline-none focus:bg-red-100 focus:text-red-900"
+                                                    onClick={() => handleDelete(stock._id)}
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
                                 </td>

@@ -159,6 +159,9 @@ const InvoiceTable = () => {
                             <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">
                                 Paid
                             </th>
+                            <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">
+                                change
+                            </th>
 
                             <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase">
                                 Actions
@@ -204,7 +207,7 @@ const InvoiceTable = () => {
                                             onChange={handleFieldChange}
                                         />
                                     ) : (
-                                        invoice.date
+                                        moment(invoice.date).format('MMM DD, YYYY')
                                     )}
                                 </td>
                                 <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
@@ -243,6 +246,19 @@ const InvoiceTable = () => {
                                     />
                                     ) : (
                                         invoice.paid
+                                    )}
+
+                                </td>
+                                <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                    {editingRow === invoice._id ? (<input
+                                        type="text"
+                                        name="category"
+                                        className={`w-full border border-gray-300 px-3 py-2 ${editingRow === invoice._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
+                                        value={medicineField.category}
+                                        onChange={handleFieldChange}
+                                    />
+                                    ) : (
+                                        invoice.change
                                     )}
 
                                 </td>
