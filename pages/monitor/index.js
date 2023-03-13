@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import MonitorLayout from '../../components/Layout/MonitorLayout';
 import Patient from './Patient'
-import Appointment from '../doctor/Appointment';
+import Patient_report from './Patient_report';
+import WithAuth from '../../components/WithAuth';
 
 
 const MonitorDashboard = () => {
@@ -11,6 +12,9 @@ const MonitorDashboard = () => {
   switch (router.pathname) {
     case '/monitor/Patient':
       managementSection = <Patient />;
+      break;
+    case '/monitor/Patient_report':
+      managementSection = <Patient_report />;
       break;
     default:
       managementSection = <MainContent />;

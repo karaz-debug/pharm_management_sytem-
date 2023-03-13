@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import DoctorLayout from '../../components/Layout/DoctorLayout';
 import { useRouter } from 'next/router';
+import moment from 'moment';
 
 function Prescription({ data }) {
     console.log(data)
@@ -59,7 +60,7 @@ function Prescription({ data }) {
 
                                         <div className="sm:col-span-1">
                                             <dt className="text-sm font-medium text-gray-500">Date of birth</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{data.dob}</dd>
+                                            <dd className="mt-1 text-sm text-gray-900">{moment(data.dob).format("MMM Do YY")}</dd>
                                         </div>
 
                                         <div className="sm:col-span-1">
@@ -77,7 +78,7 @@ function Prescription({ data }) {
                                         <div className="grid grid-cols-1 mt-2 gap-x-4 gap-y-8 sm:grid-cols-2">
                                             <div className="sm:col-span-1">
                                                 <dt className="text-sm font-medium text-gray-500">Last visit date</dt>
-                                                <dd className="mt-1 text-sm text-gray-900">{data.dop}</dd>
+                                                <dd className="mt-1 text-sm text-gray-900">{moment(data.dop).format("MMM Do YY")}</dd>
                                             </div>
 
                                             <div className="sm:col-span-1">
@@ -92,7 +93,11 @@ function Prescription({ data }) {
 
                                             <div className="sm:col-span-1">
                                                 <dt className="text-sm font-medium text-gray-500">Medical conditions</dt>
-                                                <dd className="mt-1 text-sm text-gray-900">{data.health_issues}</dd>
+                                                <dd className="mt-1 text-sm text-gray-900">{data.patient_health_report}</dd>
+                                            </div>
+                                            <div className="sm:col-span-1">
+                                                <dt className="text-sm font-medium text-gray-500">Last time prescriptions</dt>
+                                                <dd className="mt-1 text-sm text-gray-900">{data.prescriptions}</dd>
                                             </div>
                                         </div>
                                     </div>

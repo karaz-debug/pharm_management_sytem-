@@ -3,7 +3,7 @@ import moment from 'moment';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-const AppointmentTable = () => {
+const PatientReportTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [AppointementPerPagge] = useState(500);
     const [Appointement, setAppointement] = useState([]);
@@ -274,16 +274,6 @@ const AppointmentTable = () => {
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>}
                                             </button>
-                                            <Link href={`/doctor/${invoice._id}`}
-                                                className={`p-2 text-blue-600 rounded-full hover:text-blue-900 hover:bg-blue-100 focus:outline-none focus:bg-blue-100 focus:text-blue-900`}
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 12a2 2 0 114 0 2 2 0 01-4 0z" />
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                            </Link>
-
                                         </div>
 
                                     )}
@@ -314,5 +304,5 @@ const AppointmentTable = () => {
     )
 }
 
-export default AppointmentTable;
+export default PatientReportTable;
 

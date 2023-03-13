@@ -52,7 +52,7 @@ const AdminDashboard = () => {
             managementSection = <MainContent />;
     }
     return (
-        <div className="flex flex-col min-h-screen ">
+        <div className="flex flex-col ">
             <AdminLayout>
                 <div className="flex-1 h-screen px-6 py-4">
                     {managementSection}
