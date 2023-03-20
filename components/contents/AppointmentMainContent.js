@@ -1,5 +1,6 @@
 import React from 'react'
 import Appointment from '../../pages/doctor/Appointment'
+import FilterAppontements from '../filter/FilterAppontements'
 import SearchBar from '../SearchBar'
 import AppointmentTable from '../Table/AppointmentTable'
 import InvoiceTable from '../Table/InvoiceTable'
@@ -25,30 +26,11 @@ function AppointmentMainContent() {
             <hr className="my-4 border-red-500" />
             <div className="flex justify-between mb-4">
                 <SearchBar placeholder="By Patient Name.." />
-                <div>
-                    <input
-                        className="float-left w-[300px] px-4 py-3 mt-8 mb-4 leading-tight text-gray-700  border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
-                        type="text"
-                        placeholder="By Contact Number"
-                    />
-                </div>
-                <div>
-                    <input
-                        className="float-left w-[300px] px-4 py-3 mt-8 mb-4 leading-tight text-gray-700  border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
-                        type="email"
-                        placeholder="By Patient Mail"
-                    />
-                </div>
-                <div className="flex items-center justify-center gap-3">
-                    <label class=" text-gray-700 font-bold mb-2" for="date">
-                        By Appointed Date:
-                    </label>
-                    <input
-                        className="float-left w-[300px] px-4 py-3 mt-8 mb-4 leading-tight text-gray-700  border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
-                        type="date"
 
-                    />
+                <div className="flex items-center justify-center gap-3">
+                    <FilterAppontements />
                 </div>
+
 
             </div>
 

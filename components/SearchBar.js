@@ -1,43 +1,68 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchResultCategory } from '../slice/categorySlice';
+import { setSearchPatientName } from '../slice/appointementSlice';
+import { setSearchResultCustomer } from '../slice/categorySlice';
 import { setSearchResultDrug } from '../slice/drugSlice';
+import { setSearchResultInvoice } from '../slice/invoiceSlice';
 import { setSearchResult } from '../slice/searchSlice';
-import { setSearchResultUser } from '../slice/userSlice';
+import { setSearchSupplier } from '../slice/supplierSLice';
 
 function SearchBar({ placeholder }) {
     const [query, setQuery] = useState('');
     const dispatch = useDispatch();
+    console.log(query)
 
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         const response = await fetch(`http://localhost:3001/admin/stock?supplier=${query}`);
-    //         const result = await response.json();
-    //         dispatch(setSearchResult({ query, result: result.stocks }));
-    //     }
+    useEffect(() => {
+        if (query !== '') {
+            async function fetchData() {
+                const response = await fetch(`http://localhost:3001/monitor/patient?name=${query}`);
+                const result = await response.json();
+                dispatch(setSearchPatientName({ query, result: result.patients }));
+            }
+            fetchData();
+        } else {
+            dispatch(setSearchPatientName({ query: '', result: [] }));
+        }
+    }, [query, dispatch]);
 
-    //     fetchData();
-    // }, [query, dispatch]);
+    useEffect(() => {
+        if (query !== '') {
+            async function fetchData() {
+                const response = await fetch(`http://localhost:3001/admin/stock?supplier=${query}`);
+                const result = await response.json();
+                dispatch(setSearchResult({ query, result: result.stocks }));
+            }
 
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         const response = await fetch(`http://localhost:3001/admin/drugs?name=${query}`);
-    //         const result = await response.json();
-    //         dispatch(setSearchResultDrug({ query, result: result.drugs }));
-    //     }
+            fetchData();
+        } else {
+            dispatch(setSearchResult({ query: '', result: [] }));
+        }
 
-    //     fetchData();
-    // }, [query, dispatch]);
+    }, [query, dispatch]);
 
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         const response = await fetch(`http://localhost:3001/admin/category?name=${query}`);
-    //         const result = await response.json();
-    //         dispatch(setSearchResultCategory({ query, result: result.categories }));
-    //     }
+    useEffect(() => {
+        if (query !== '') {
+            async function fetchData() {
+                const response = await fetch(`http://localhost:3001/admin/drugs?name=${query}`);
+                const result = await response.json();
+                dispatch(setSearchResultDrug({ query, result: result.drugs }));
+            }
 
-    //     fetchData();
-    // }, [query, dispatch]);
+            fetchData();
+        } else {
+            dispatch(setSearchResultDrug({ query: "", result: [] }));
+        }
+    }, [query, dispatch]);
+
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch(`http://localhost:3001/admin/invoices?name=${query}`);
+            const result = await response.json();
+            dispatch(setSearchResultInvoice({ query, result: result.invoices }));
+        }
+
+        fetchData();
+    }, [query, dispatch]);
 
     // useEffect(() => {
     //     async function fetchData() {
@@ -49,8 +74,37 @@ function SearchBar({ placeholder }) {
     //     fetchData();
     // }, [query, dispatch]);
 
-    const searchDrug = useSelector((state) => state.search.searchQuery)
-    const searchResult = useSelector((state) => state.search.searchResult)
+    useEffect(() => {
+        if (query !== '') {
+            async function fetchData() {
+                const response = await fetch(`http://localhost:3001/admin/customer?name=${query}`);
+                const result = await response.json();
+                dispatch(setSearchResultCustomer({ query, result: result.customers }));
+            }
+
+            fetchData();
+        } else {
+            dispatch(setSearchResultCustomer({ query: "", result: [] }));
+        }
+
+    }, [query, dispatch]);
+
+    useEffect(() => {
+        if (query !== '') {
+            async function fetchData() {
+                const response = await fetch(`http://localhost:3001/admin/supplier?name=${query}`);
+                const result = await response.json();
+                dispatch(setSearchSupplier({ query, result: result.suppliers }));
+            }
+
+            fetchData();
+        } else {
+            dispatch(setSearchSupplier({ query: '', result: [] }));
+        }
+
+    }, [query, dispatch]);
+
+
 
     // console.log("this is search query", searchQuery)
     // console.log("and this is search Result", searchResult)
@@ -68,5 +122,6 @@ function SearchBar({ placeholder }) {
         </div>
     );
 }
+
 
 export default SearchBar;

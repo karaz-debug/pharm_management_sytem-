@@ -1,6 +1,6 @@
 import axios from 'axios';
-import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const SupplierTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +23,11 @@ const SupplierTable = () => {
 
     const indexOfLastSupplier = currentPage * supplierPerPage;
     const indexOfFirstSupplier = indexOfLastSupplier - supplierPerPage;
+
+    const searchSupplier = useSelector((state) => state.searchsupplier.searchSupplier);
+    const searchResultSupplier = useSelector((state) => state.searchsupplier.searchResultSupplier);
     const currentSupplier = supplier?.slice(indexOfFirstSupplier, indexOfLastSupplier);
+    const SupplierToRender = searchSupplier ? searchResultSupplier : currentSupplier
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
     const [editingRow, setEditingRow] = useState(null);
@@ -140,7 +144,7 @@ const SupplierTable = () => {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {currentSupplier?.map((supplier) => (
+                        {SupplierToRender?.map((supplier) => (
                             <tr key={supplier._id}>
 
                                 <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">

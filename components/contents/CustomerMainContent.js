@@ -1,4 +1,5 @@
 import React from 'react'
+import SearchBar from '../SearchBar'
 import CustomerTable from '../Table/CustomerTable'
 
 function CustomerMainContent() {
@@ -20,6 +21,10 @@ function CustomerMainContent() {
                 </div>
             </div>
             <hr className="my-4 border-red-500" />
+
+            <div className="flex justify-between mb-4">
+                <SearchBar placeholder="By Customer Name.." />
+            </div>
 
             <CustomerTable />
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import StockTable from '../Table/StockTable'
+import SearchBar from '../SearchBar'
 import SupplierTable from '../Table/SupplierTable'
 
 function SupplierManagement() {
@@ -21,9 +21,10 @@ function SupplierManagement() {
                 </div>
             </div>
             <hr className="my-4 border-red-500" />
-
+            <div className="flex justify-between mb-4">
+                <SearchBar placeholder="By Patient Name.." />
+            </div>
             <SupplierTable />
-
         </div>
     )
 }

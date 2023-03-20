@@ -25,7 +25,13 @@ const DrugTable = () => {
     const indexOfLastdrug = currentPage * drugsPerPage;
     const indexOfFirstdrug = indexOfLastdrug - drugsPerPage;
 
+
+    const searchDrug = useSelector((state) => state.drugsearch.searchDrug);
+    const searchResultDrug = useSelector((state) => state.drugsearch.searchResultDrug);
+
     const currentDrugs = drugs.slice(indexOfFirstdrug, indexOfLastdrug);
+    const drugsToRender = searchDrug ? searchResultDrug : currentDrugs;
+
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
     const [editingRow, setEditingRow] = useState(null);
@@ -155,7 +161,7 @@ const DrugTable = () => {
                     </thead>
 
                     <tbody className="divide-y divide-gray-200">
-                        {currentDrugs.map((drug) => (
+                        {drugsToRender.map((drug) => (
                             <tr key={drug._id}>
                                 <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
                                     {editingRow === drug._id ? (

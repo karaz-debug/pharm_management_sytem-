@@ -138,7 +138,7 @@ router.get('/stock', async (req, res) => {
 
         if (req.query.supplier) {
             const regex = new RegExp(req.query.supplier, 'i');
-            stocks = stocks.filter(stock => regex.test(stock.Supplier));
+            stocks = stocks.filter(stock => regex.test(stock.selectedSupplier));
         }
 
         res.status(200).json({ stocks });
@@ -209,6 +209,7 @@ router.post('/drugs', async (req, res) => {
 
 // Get all the Drugs
 router.get('/drugs', async (req, res) => {
+    console.log(req.query.name)
     try {
         let drugs = await Drug.find({});
 
@@ -626,7 +627,7 @@ router.get('/invoices', async (req, res) => {
 
         if (req.query.name) {
             const regex = new RegExp(req.query.name, 'i');
-            invoices = invoices.filter(invoice => regex.test(invoices.customer));
+            invoices = invoices.filter(invoice => regex.test(invoice.customer));
         }
 
         res.status(200).json({ invoices });

@@ -201,68 +201,7 @@ const AddInvoice = () => {
 
 
 
-    // if we can shoot down all this above 3 handles in one code the we will see
 
-    //  function handleSaveForm(event) {
-    //     event.preventDefault(); // prevent default form submission
-
-    //     const upperInputData = {
-    //         selectedCustomer,
-    //         invoiceNumber,
-    //         paymentType,
-    //         date,
-    //         contact
-    //     };
-
-    //     setFieldsData({
-    //         ...fieldsData,
-    //         upperInputData
-
-    //     })
-
-
-    //     console.log("form data b4 main save", formData)
-
-
-    // }
-
-    // Add handle submit fully implemented
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     setFormData({
-    //         ...formData,
-    //         rows,
-    //         paid,
-    //         change,
-    //     })
-
-    //     try {
-    //         const response = await fetch('http://localhost:3001/admin/invoice', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify(formData)
-    //         });
-
-    //         const result = await response.json();
-
-    //         console.log(result);
-
-    //         // reset the form fields
-    //         setSelectedCustomer("");
-    //         setInvoiceNumber("");
-    //         setPaymentType("");
-    //         setDate("");
-    //         setContact("")
-    //         setRows([{ medicineName: "", packaging: "", batchID: "", expiryDate: "", rate: "", amount: "" }]);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-
-    //     console.log("this total form data ", formData);
-
-    // }
 
     const handleGenerateInvoice = async () => {
 
@@ -294,6 +233,9 @@ const AddInvoice = () => {
 
             const data = await response.json();
             setInvoice(data);
+
+            // Print the generated invoice
+            window.print();
             // reset the form fields
             setSelectedCustomer("");
             setInvoiceNumber("");
@@ -426,7 +368,7 @@ const AddInvoice = () => {
 
             <hr className="my-4 font-bold border-green-500" />
 
-            <table className="">
+            <table className="w-full">
                 <thead className=" bg-gray-50">
                     <tr >
                         <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">

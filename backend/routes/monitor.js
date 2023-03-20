@@ -3,7 +3,7 @@ const Patient = require('../models/patient');
 const router = express.Router();
 
 router.post('/patient', async (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     try {
         const {
             first_name,
@@ -52,13 +52,16 @@ router.post('/patient', async (req, res) => {
 });
 
 router.get('/patient', async (req, res) => {
+    console.log(req.query.patients)
     try {
         let patients = await Patient.find({});
 
-        if (req.query.patients) {
-            const regex = new RegExp(req.query.patients, 'i');
-            patients = patients.filter(patient => regex.test(patient.Supplier));
+        if (req.query.name) {
+            const regex = new RegExp(req.query.name, 'i');
+            patients = patients.filter(patient => regex.test(patient.first_name));
         }
+
+        console.log(patients)
 
         res.status(200).json({ patients });
     } catch (err) {
@@ -83,7 +86,7 @@ router.get('/patient/:id', async (req, res) => {
 router.put('/patient/:id', async (req, res) => {
     const id = req.params.id;
 
-    console.log(`Patient id ${id}`);
+    // console.log(`Patient id ${id}`);
 
     try {
         // Find the existing patient report in the database
@@ -105,5 +108,48 @@ router.put('/patient/:id', async (req, res) => {
         res.status(500).send('Error updating patient report');
     }
 });
+
+router.get('/appointments', (req, res) => {
+    let startDate, endDate;
+
+    switch (req.query.range) {
+        case 'today':
+            startDate = new Date();
+            startDate.setHours(0, 0, 0, 0);
+            endDate = new Date();
+            endDate.setHours(23, 59, 59, 999);
+            break;
+        case 'yesterday':
+            startDate = new Date();
+            startDate.setDate(startDate.getDate() - 1);
+            startDate.setHours(0, 0, 0, 0);
+            endDate = new Date();
+            endDate.setDate(endDate.getDate() - 1);
+            endDate.setHours(23, 59, 59, 999);
+            break;
+        case 'last week':
+            startDate = new Date();
+            startDate.setDate(startDate.getDate() - 7);
+            startDate.setHours(0, 0, 0, 0);
+            endDate = new Date();
+            endDate.setHours(23, 59, 59, 999);
+            break;
+
+    }
+
+
+
+    Patient.find({ dop: { $gte: startDate, $lte: endDate } }, (err, appointments) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send(err);
+        } else {
+            res.send(appointments);
+        }
+    });
+});
+
+
+
 
 module.exports = router;

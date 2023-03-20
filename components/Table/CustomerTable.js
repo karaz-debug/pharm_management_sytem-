@@ -22,10 +22,15 @@ const CustomerTable = () => {
 
         fetchCustomer();
     }, []);
+
+    const searchCustomer = useSelector((state) => state.customersearch.searchCustomer);
+    const searchCustomerResult = useSelector((state) => state.customersearch.searchCustomerResult);
+
+
     const indexOfLastcustomer = currentPage * CustomerPerPagge;
     const indexOfFirstcustomer = indexOfLastcustomer - CustomerPerPagge;
     const currentCustomer = Customer.slice(indexOfFirstcustomer, indexOfLastcustomer);
-    const CustomerToRender = currentCustomer;
+    const CustomerToRender = searchCustomer ? searchCustomerResult : currentCustomer;
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -238,7 +243,6 @@ const CustomerTable = () => {
                                                     </svg>
                                                 </button>
                                             </div>
-                                            drug
                                         </div>
                                     )}
                                 </td>

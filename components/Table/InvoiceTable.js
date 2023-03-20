@@ -27,10 +27,11 @@ const InvoiceTable = () => {
     const indexOfFirstdrug = indexOfLastdrug - invocesPerPagge;
     // const currentInvoces = Invoces.slice(indexOfFirstdrug, indexOfLastdrug);
 
-    // const searchDrug = useSelector((state) => state.Invocesearch.searchDrug);
-    // const searchResultDrug = useSelector((state) => state.Invocesearch.searchResultDrug);
+    const searchInvoice = useSelector((state) => state.invoicesearch.searchInvoice);
+    const searchResultInvoice = useSelector((state) => state.invoicesearch.searchResultInvoice);
     const currentInvoces = Invoces.slice(indexOfFirstdrug, indexOfLastdrug);
-    const InvocesToRender = currentInvoces;
+    const InvocesToRender = searchInvoice ? searchResultInvoice : currentInvoces;
+
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 

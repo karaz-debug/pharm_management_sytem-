@@ -34,20 +34,7 @@ function DrugMainContent() {
             <hr className="my-4 border-red-500" />
             <div className="flex justify-between mb-4">
                 <SearchBar placeholder="By Medicine Name.." />
-                <div>
-                    <input
-                        className="float-left w-[300px] px-4 py-3 mt-8 mb-4 leading-tight text-gray-700  border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
-                        type="text"
-                        placeholder="By Supplier Name"
-                    />
-                </div>
-                <div>
-                    <input
-                        className="float-left w-[300px] px-4 py-3 mt-8 mb-4 leading-tight text-gray-700  border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
-                        type="number"
-                        placeholder="Batch ID"
-                    />
-                </div>
+
                 <button className="px-4 py-3 mt-8 mb-4 bg-red-500 rounded-lg ">
                     Out of Stock
                 </button>

@@ -1,23 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    searchCategory: '',
-    searchCategoryResult: [],
+    searchCustomer: '',
+    searchCustomerResult: [],
 };
 
-export const categorySlice = createSlice({
-    name: 'categorysearch',
+export const customerSlice = createSlice({
+    name: 'customersearch',
     initialState,
     reducers: {
-        setSearchResultCategory: (state, action) => {
-            state.searchCategory = action.payload.query;
-            state.searchCategoryResult = action.payload.result;
+        setSearchResultCustomer: (state, action) => {
+            state.searchCustomer = action.payload.query;
+            state.searchCustomerResult = action.payload.result;
         },
     },
 });
 
-export const { setSearchResultCategory } = categorySlice.actions;
+export const { setSearchResultCustomer } = customerSlice.actions;
 
 
 
-export default categorySlice.reducer;
+export default customerSlice.reducer;

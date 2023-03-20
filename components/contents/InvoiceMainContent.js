@@ -28,30 +28,7 @@ function InvoiceMainContent() {
             <hr className="my-4 border-red-500" />
             <div className="flex justify-between mb-4">
                 <SearchBar placeholder="By Medicine Name.." />
-                <div>
-                    <input
-                        className="float-left w-[300px] px-4 py-3 mt-8 mb-4 leading-tight text-gray-700  border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
-                        type="text"
-                        placeholder="By Invoice Number"
-                    />
-                </div>
-                <div>
-                    <input
-                        className="float-left w-[300px] px-4 py-3 mt-8 mb-4 leading-tight text-gray-700  border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
-                        type="number"
-                        placeholder="By Customer Number"
-                    />
-                </div>
-                <div className="flex items-center justify-center gap-3">
-                    <label class=" text-gray-700 font-bold mb-2" for="date">
-                        By Invoice Date:
-                    </label>
-                    <input
-                        className="float-left w-[300px] px-4 py-3 mt-8 mb-4 leading-tight text-gray-700  border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
-                        type="date"
 
-                    />
-                </div>
 
             </div>
 
