@@ -64,3 +64,107 @@ remaining = user, category = done,
     // const searchDrug = useSelector((state) => state.drugsearch.searchDrug);
     // const searchResultDrug = useSelector((state) => state.drugsearch.searchResultDrug);
     // const drugsToRender = searchDrug ? searchResultDrug : currentDrugs;
+
+20 MARCH
+
+- OUT OF STOCK
+- TOTAL PURCHASE PER DAY AND MONTH
+- TOTAL SALES PER DAY AND MONTH
+- SHOW OUT OF STOCK IN THE TABLE
+- CHANGE THE DRUG TABLE WELL
+
+<!-- LOGIN CODE -->
+
+// login employee
+router.post("/login", async (req, res) => {
+try {
+const employee = await Employee.findOne({
+employeeId: req.body.employeeId,
+});
+if (!employee) {
+return res.status(200).send({
+message: "Employee not found",
+success: false,
+});
+}
+const isMatch = await bcrypt.compare(req.body.password, employee.password);
+if (!isMatch) {
+return res.status(200).send({
+message: "Invalid password",
+success: false,
+});
+}
+if (employee.isApproved === false) {
+return res.status(200).send({
+message: "Your account is not approved yet",
+success: false,
+});
+}
+
+    const token = jwt.sign(
+      { employeeId: employee._id },
+      process.env.jwt_secret,
+      { expiresIn: "24h" }
+    );
+    res.status(200).send({
+      message: "Login successful",
+      success: true,
+      data: token,
+    });
+
+} catch (error) {
+res.status(500).send({
+message: error.message,
+success: false,
+});
+}
+});
+
+<!-- aUTH MIDLLEWARE -->
+
+const jwt = require("jsonwebtoken");
+
+module.exports = (req, res, next) => {
+
+    const token = req.headers.authorization.split(' ')[1];
+    if(!token) return res.status(401).send({message: 'Access denied. No token provided.' , success: false});
+    try {
+        const decoded = jwt.verify(token, process.env.jwt_secret);
+        req.body.employeeId = decoded.employeeId;
+        next();
+    } catch (error) {
+        return res.status(500).send({message: 'Access denied. Invalid token.' , success: false});
+    }
+
+}
+
+<!-- pUBLIC ROUTE CODE  -->
+
+import axios from "axios";
+import React, { useEffect } from "react";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { ShowLoading, HideLoading } from "../redux/alerts.js";
+import { SetEmployee } from "../redux/employees.js";
+import DefaultLayout from "../components/DefaultLayout.js";
+import { useNavigate } from "react-router-dom";
+
+function PublicRoute(props) {
+const navigate = useNavigate();
+
+useEffect(() => {
+if (localStorage.getItem("token")) {
+navigate("/employee");
+}
+}, []);
+
+return <>{props.children}</>;
+}
+
+export default PublicRoute;
+
+<!-- Different users sign in  -->
+
+if user.role === ''admin' = router.push('/admin)
+else if(user.role === 'doctor') = router.push('doctor/appointement')
+else if(user.role === 'monitor') = router.push('monitor/patient')

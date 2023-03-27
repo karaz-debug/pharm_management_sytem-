@@ -6,6 +6,8 @@ const Header = ({
     sidebarOpen,
     setSidebarOpen,
 }) => {
+
+    const [notifications, setNotification] = useState([])
     const [notificationOpen, setNotificationOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
     const [admistrator, setAdmistrator] = useState(false);
@@ -18,6 +20,21 @@ const Header = ({
         }
 
     }
+
+    useEffect(() => {
+        async function fetchNotifications() {
+            try {
+                const response = await fetch('http://localhost:3001/admin//out-of-stock');
+                const data = await response.json();
+                setNotification(data.drugsOutOfStock);
+
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        }
+        fetchNotifications();
+    }, []);
+
 
     const router = useRouter()
     useEffect(() => {
@@ -262,7 +279,7 @@ const Header = ({
                             </div>
                         )} */}
 
-                        <button
+                        {/* <button
                             onClick={() => setNotificationOpen(!notificationOpen)}
                             className="ml-3 text-gray-100 hover:text-gray-800"
                         >
@@ -277,8 +294,23 @@ const Header = ({
                             >
                                 <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                             </svg>
+                        </button> */}
+                        {/* <button
+                            onClick={() => setNotificationOpen(!notificationOpen)}
+                            class="flex items-center justify-center relative rounded-full bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            type="button"
+                        >
+                            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12v-1a8 8 0 0 0-7-7H8a8 8 0 0 0-7 7v1"></path>
+                                <path d="M3.51 9a15.91 15.91 0 0 1 8.49-6"></path>
+                                <path d="M12 2L12 12"></path>
+                            </svg>
+                            <span class="animate-bounce absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
+                                <span>3</span>
+                            </span>
                         </button>
-                        {/* {notificationOpen && (
+
+                        {notificationOpen && (
                             <div className="absolute w-48 mt-2 bg-white rounded-lg shadow-xl notification">
                                 <div className="py-2">
                                     <a
@@ -302,6 +334,46 @@ const Header = ({
                                 </div>
                             </div>
                         )} */}
+
+                        <div class="relative">
+                            <button
+                                onClick={() => setNotificationOpen(!notificationOpen)}
+                                className="relative flex items-center justify-center text-white bg-blue-500 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                type="button"
+                            >
+                                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 12v-1a8 8 0 0 0-7-7H8a8 8 0 0 0-7 7v1"></path>
+                                    <path d="M3.51 9a15.91 15.91 0 0 1 8.49-6"></path>
+                                    <path d="M12 2L12 12"></path>
+                                </svg>
+                                <span class="{{ notifications.length > 0 ? 'animate-bounce' : '' }} absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
+                                    <span>{notifications.length}</span>
+                                </span>
+                            </button>
+
+                            {notificationOpen ? (
+                                <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl">
+                                    <div class="py-2">
+                                        {
+                                            notifications.length > 0 ? (
+                                                notifications.map((notification, index) => (
+                                                    <a href="#" key={index} className="block px-4 py-2 text-gray-800 hover:bg-gray-300">
+
+                                                        <span class="font-bold">{notification.medicineName}</span>
+                                                    </a>
+                                                ))
+                                            ) : (
+                                                <p class="px-4 py-2 text-gray-800">No notifications</p>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            ) : (
+                                ""
+                            )}
+
+                        </div>
+
 
                         <div className="flex items-center ml-4" >
                             <div class="relative inline-flex">

@@ -32,9 +32,17 @@ const Login = () => {
                 setUser({ email: '', password: '' });
                 // Save the token in local storage
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('role', data.user.role);
 
-                router.push('/admin')
+                let role = localStorage.getItem("role");
 
+                if (role === 'admin') {
+                    router.push('/admin')
+                } else if (role === 'doctor') {
+                    router.push('/doctor/Appointment')
+                } else if (role === 'monitor') {
+                    router.push('/monitor/Patient')
+                }
             } else {
                 console.log(data)
             }

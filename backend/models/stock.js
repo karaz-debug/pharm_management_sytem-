@@ -17,7 +17,7 @@ const StockSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    amount: {
+    totalNet: {
         type: Number,
         required: true
     },

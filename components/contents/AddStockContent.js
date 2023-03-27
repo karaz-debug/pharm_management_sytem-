@@ -194,7 +194,7 @@ const AddStockContent = () => {
                 invoiceNumber: invoiceNumber,
                 paymentType: paymentType,
                 date: date, // add date field
-                amount: rows.reduce((acc, row) => acc + row.amount, 0),
+                totalNet: rows.reduce((acc, row) => acc + row.amount, 0),
                 items: rows,
             };
 

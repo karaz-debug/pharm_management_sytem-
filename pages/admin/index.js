@@ -12,6 +12,7 @@ import Login from '../Login'
 import WithAuth from '../../components/WithAuth'
 import Supplier from './Supplier'
 import Invoice from './Invoice'
+import Prescription from './Prescription'
 
 const AdminDashboard = () => {
     const router = useRouter()
@@ -44,7 +45,9 @@ const AdminDashboard = () => {
         case '/admin/Invoice':
             managementSection = <Invoice />;
             break;
-
+        case '/admin/Prescription':
+            managementSection = <Prescription />;
+            break;
         case '/admin/ReversalNotifications':
             managementSection = <ReversalNotifications />;
             break;

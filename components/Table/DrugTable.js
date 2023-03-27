@@ -6,7 +6,7 @@ import DrugModalPop from '../Modal/DrugModalPop';
 
 const DrugTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [drugsPerPage] = useState(5);
+    const [drugsPerPage] = useState(10);
     const [drugs, setDrugs] = useState([]);
     const [error, setError] = useState(null);
 
@@ -139,7 +139,7 @@ const DrugTable = () => {
                                 Medicine Name
                             </th>
                             <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">
-                                Packaging
+                                Quantity
                             </th>
                             <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">
                                 Batch ID
@@ -149,10 +149,7 @@ const DrugTable = () => {
                                 Ex.Date
                             </th>
                             <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">
-                                Rate
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">
-                                Amount
+                                Manufucture
                             </th>
                             <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase">
                                 Actions
@@ -186,7 +183,7 @@ const DrugTable = () => {
                                             onChange={handleFieldChange}
                                         />
                                     ) : (
-                                        drug.Packaging
+                                        drug.Quantity
                                     )}
                                 </td>
                                 <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
@@ -225,19 +222,6 @@ const DrugTable = () => {
                                     />
                                     ) : (
                                         drug.supplier
-                                    )}
-
-                                </td>
-                                <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                                    {editingRow === drug._id ? (<input
-                                        type="text"
-                                        name="Quantity"
-                                        className={`w-full border border-gray-300 px-3 py-2 ${editingRow === drug._id ? 'border-blue-500 focus:outline-none focus:border-blue-600' : ''}`}
-                                        value={medicineField.Quantity}
-                                        onChange={handleFieldChange}
-                                    />
-                                    ) : (
-                                        drug.Quantity
                                     )}
 
                                 </td>
