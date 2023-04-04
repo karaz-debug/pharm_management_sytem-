@@ -3,58 +3,37 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 
 const DashboardPage = () => {
-    const [stocks, setStock] = useState([]);
-    const [outStock, setOutStock] = useState([]);
-
-    console.log("this is out of stock drugs", outStock)
-
-    useEffect(() => {
-        fetch("http://localhost:3001/admin/stock")
-            .then(res => res.json())
-            .then(data => setStock(data.stocks))
-            .catch(err => console.log(err));
-    }, []);
-
-    useEffect(() => {
-        fetch("http://localhost:3001/admin/drugOutofStock")
-            .then(res => res.json())
-            .then(data => setOutStock(data))
-            .catch(err => console.log(err));
-    }, []);
-
-
-
-
     const [dailySales, setDailySales] = useState([]);
     const [dailyPurchases, setDailyPurchases] = useState([]);
-
     const [Orders, setOrders] = useState([]);
     const [customers, setCustomers] = useState([]);
     const [patients, setPatients] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:3001/admin/dailySales')
+            .then(res => res.json())
+            .then(data => setDailySales(data))
+            .catch(err => console.log(err));
+    }, []);
 
 
 
     useEffect(() => {
         const fetchAllData = async () => {
             try {
-                const [dailySalesResponse, dailyPurchasesResponse, Invoice, Customer, patient] = await Promise.all([
-                    fetch('http://localhost:3001/admin/dailySales'),
+                const [dailyPurchasesResponse, Invoice, Customer, patient] = await Promise.all([
                     fetch('http://localhost:3001/admin/dailyPurchases'),
                     fetch('http://localhost:3001/admin/invoices'),
                     fetch('http://localhost:3001/admin/customer'),
                     fetch('http://localhost:3001/monitor/patient'),
                 ]);
 
-                const dailySalesData = await dailySalesResponse.json();
                 const dailyPurchasesData = await dailyPurchasesResponse.json();
-                const outOfStockMedicinesData = await outOfStockMedicinesResponse.json();
                 const ToatlOrders = await Invoice.json();
                 const TotalCustomers = await Customer.json();
                 const TotalPateints = await patient.json();
 
-                setDailySales(dailySalesData);
                 setDailyPurchases(dailyPurchasesData);
-                setOutOfStockMedicines(outOfStockMedicinesData);
                 setOrders(ToatlOrders)
                 setCustomers(TotalCustomers)
                 setPatients(TotalPateints)

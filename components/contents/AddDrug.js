@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+
 
 const AddDrug = () => {
     const [medicine, setMedicine] = useState({})
@@ -23,7 +25,16 @@ const AddDrug = () => {
 
         const data = await response.json();
         console.log(data);
+        setMedicine("")
+
+        if (response.ok) {
+            alert(data.Message);
+
+        } else {
+            alert('Failed to save drug.');
+        }
     };
+
 
     return (
         <div className="p-4">
@@ -143,13 +154,6 @@ const AddDrug = () => {
             </div>
 
             <hr className="my-4 border-green-500" />
-
-
-
-
-
-
-
         </div>
 
     );

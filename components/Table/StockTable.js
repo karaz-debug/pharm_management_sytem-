@@ -2,7 +2,6 @@ import axios from 'axios';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import StockModal from '../Modal/StockModal';
 
 const StockTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -98,6 +97,13 @@ const StockTable = () => {
                 body: JSON.stringify(updatedStock)
             });
 
+            if (response.ok) {
+                alert("Succesfully Edited the Stock");
+
+            } else {
+                alert('YOur not authourized || failed to Edit Stock');
+            }
+
             console.log(response)
             setFieldStock("");
             setEditingRow(null);
@@ -123,10 +129,13 @@ const StockTable = () => {
             .then(res => {
                 if (res.status === 200) {
                     // success, show a message or redirect to a success page
+                    alert("Succesfully Edited the Drug");
+
                 }
             })
             .catch(err => {
                 if (err.response.status === 401) {
+                    alert('YOur not authourized || failed to Edit Drug');
                     setError('Unauthorized: You are not logged in or do not have the admin role.');
                 } else if (err.response.status === 404) {
                     setError('Not Found: The stock entry with the specified ID does not exist.');
@@ -338,7 +347,6 @@ const StockTable = () => {
                 })}
             </div>
 
-            {showModal && <StockModal isOpen={showModal} selectedStock={selectedStock} onClose={() => setShowModal(false)} />}
 
 
         </div>

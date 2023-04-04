@@ -95,6 +95,8 @@ const InvoiceTable = () => {
                 body: JSON.stringify(updatedInvoces)
             });
 
+
+
             console.log(response)
             setMedicineField("");
             setEditingRow(null);
@@ -118,10 +120,12 @@ const InvoiceTable = () => {
             .then(res => {
                 if (res.status === 200) {
                     // success, show a message or redirect to a success page
+                    alert("Succefully Deleted the invoice");
                 }
             })
             .catch(err => {
                 if (err.response.status === 401) {
+                    alert('Your not authourized to delete invoice.');
                     setError('Unauthorized: You are not logged in or do not have the admin role.');
                 } else if (err.response.status === 404) {
                     setError('Not Found: The drug entry with the specified ID does not exist.');

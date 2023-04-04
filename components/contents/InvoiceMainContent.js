@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import CategoryModal from "../CategoryModal";
-import DrugModalPop from "../Modal/DrugModalPop";
-import ModalPop from "../Modal/DrugModalPop";
+
 import SearchBar from "../SearchBar";
-import DrugTable from "../Table/DrugTable";
 import InvoiceTable from "../Table/InvoiceTable";
-import TableContent from "../TableContent";
 
 function InvoiceMainContent() {
     return (

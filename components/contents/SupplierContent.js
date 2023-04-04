@@ -19,6 +19,12 @@ const Supplier = () => {
 
         const data = await response.json();
         console.log(data);
+        if (response.ok) {
+            alert("Successfully Added the Supplier");
+
+        } else {
+            alert('Failed to Add Supplier.');
+        }
     };
 
 

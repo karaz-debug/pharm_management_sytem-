@@ -2,7 +2,6 @@ import axios from 'axios';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import DrugModalPop from '../Modal/DrugModalPop';
 
 const DrugTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -91,6 +90,13 @@ const DrugTable = () => {
                 body: JSON.stringify(updatedDrugs)
             });
 
+            if (response.ok) {
+                alert("Succesfully Edited the Drug");
+
+            } else {
+                alert('YOur not authourized || failed to Edit Drug');
+            }
+
             console.log(response)
             setMedicineField("");
             setEditingRow(null);
@@ -114,10 +120,12 @@ const DrugTable = () => {
             .then(res => {
                 if (res.status === 200) {
                     // success, show a message or redirect to a success page
+                    alert("Succesfully Deleted the Drug");
                 }
             })
             .catch(err => {
                 if (err.response.status === 401) {
+                    alert('Your not authourized to delete  Drug');
                     setError('Unauthorized: You are not logged in or do not have the admin role.');
                 } else if (err.response.status === 404) {
                     setError('Not Found: The drug entry with the specified ID does not exist.');

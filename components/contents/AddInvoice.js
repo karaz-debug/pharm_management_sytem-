@@ -233,6 +233,12 @@ const AddInvoice = () => {
 
             const data = await response.json();
             setInvoice(data);
+            if (response.ok) {
+                alert("Succefully Added the invoice");
+
+            } else {
+                alert('Failed to save invoice.');
+            }
 
             // Print the generated invoice
             window.print();
@@ -358,11 +364,7 @@ const AddInvoice = () => {
                             placeholder="Enter contact number"
                         />
                     </div>
-                    <div className="flex justify-start mt-2 pt-7">
-                        <button type="submit" className="w-1/4 h-10 text-white bg-blue-500 rounded-lg focus:outline-none" >
-                            Save
-                        </button>
-                    </div>
+
                 </form>
             </div>
 

@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import CategoryModal from '../CategoryModal';
-import CategoryModalPop from '../Modal/CategoryModalPop';
+
 
 const CategoryTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -146,7 +145,6 @@ const CategoryTable = () => {
                 })}
             </div>
 
-            {showModal && <CategoryModalPop isOpen={showModal} selectedCategory={selectedCategory} onClose={() => setShowModal(false)} />}
 
 
         </div>

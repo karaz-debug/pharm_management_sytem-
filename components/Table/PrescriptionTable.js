@@ -44,8 +44,8 @@ const PrescriptionTable = () => {
 
     return (
         <div>
-            <div className="overflow-hidden overflow-x-scroll border rounded-lg">
-                <table className="w-full">
+            <div className=" overflow-hidden overflow-x-scroll border rounded-lg">
+                <table className="w-full ">
                     <thead className=" bg-gray-50">
                         <tr >
                             <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase">
@@ -73,7 +73,7 @@ const PrescriptionTable = () => {
                         </tr>
                     </thead>
 
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-200 ">
                         {PrescriptionToRender.map((invoice) => (
                             <tr key={invoice._id}>
                                 <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">

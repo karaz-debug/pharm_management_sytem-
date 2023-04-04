@@ -83,6 +83,13 @@ const SupplierTable = () => {
                 body: JSON.stringify(updatedStock)
             });
 
+            if (response.ok) {
+                alert("Succesfully Edited the supplier");
+
+            } else {
+                alert('YOur not authourized || failed to Edit supplier');
+            }
+
             console.log(response)
             setFieldSupplier("");
             setEditingRow(null);
@@ -106,10 +113,12 @@ const SupplierTable = () => {
             .then(res => {
                 if (res.status === 200) {
                     // success, show a message or redirect to a success page
+                    alert("Succesfully Deleted the supplier");
                 }
             })
             .catch(err => {
                 if (err.response.status === 401) {
+                    alert('Your not authourized  to Delete a supplier');
                     setError('Unauthorized: You are not logged in or do not have the admin role.');
                 } else if (err.response.status === 404) {
                     setError('Not Found: The stock entry with the specified ID does not exist.');

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import UserModal from '../Modal/UserModal'
 import SearchBar from '../SearchBar'
 import UserTable from "../Table/UserTable";
 
@@ -41,12 +40,7 @@ function UserMainContent() {
                         placeholder="By User ID"
                     />
                 </div>
-                <button className="px-4 py-3 mt-8 mb-4 bg-red-500 rounded-lg ">
-                    Suspended User's
-                </button>
-                <button className="px-4 py-3 mt-8 mb-4 bg-green-400 rounded-lg">
-                    Active User's
-                </button>
+
 
             </div>
 

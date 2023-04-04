@@ -290,29 +290,39 @@ router.get('/users', async (req, res) => {
 // Activate the user
 router.put('/user/activate/:id', verifyToken, async (req, res) => {
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, { active: true }, { new: true });
-
-        if (!user) {
-            return res.status(404).send({ error: 'User not found' });
+        const authData = await jwt.verify(req.token, "165371566132632461543261543516426184721abghdghjsvdbn");
+        const user = await User.findOne({ _id: authData.id })
+        if (user.role === "admin") {
+            const activeuser = await User.findByIdAndUpdate(req.params.id, { active: true }, { new: true });
+            return res.send({ message: 'User activated successfully', activeuser });
+            // return res.status(404).send({ error: 'User not found' });
+        } else {
+            res.sendStatus(401);
         }
 
-        return res.send({ message: 'User activated successfully' });
+
     } catch (error) {
         console.error(error);
         return res.status(500).send({ error: 'Failed to activate user' });
     }
 });
 
+
+
 // De-activate the user
 router.put('/user/deativate/:id', verifyToken, async (req, res) => {
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, { active: false }, { new: true });
+        const authData = await jwt.verify(req.token, "165371566132632461543261543516426184721abghdghjsvdbn");
+        const user = await User.findOne({ _id: authData.id })
 
-        if (!user) {
-            return res.status(404).send({ error: 'User not found' });
+        if (user.role === "admin") {
+            const deactivateduser = await User.findByIdAndUpdate(req.params.id, { active: false }, { new: true });
+            return res.send({ message: 'User de-activated successfully', deactivateduser });
+            // return res.status(404).send({ error: 'User not found' });
+        } else {
+            res.sendStatus(401);
         }
 
-        return res.send({ message: 'User de-activated successfully' });
     } catch (error) {
         console.error(error);
         return res.status(500).send({ error: 'Failed to de-activate user' });
@@ -680,43 +690,33 @@ router.delete("/invoice/:id", verifyToken, async (req, res) => {
 // routes/dashboard.js
 
 
+
 // // Get the daily sales for a specific day
-// router.get('/dailySales', async (req, res) => {
-//     const date = new Date(); // Replace with the desired date
-//     const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-//     const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
 
-//     const dailySales = await Invoice.aggregate([
-//         { $match: { date: { $gte: startDate, $lt: endDate } } },
-//         { $group: { _id: null, totalSales: { $sum: '$paid' } } }
-//     ]);
-
-//     res.status(200).json(dailySales);
-// });
 
 router.get('/dailySales', async (req, res) => {
     const today = new Date(); // Today's date
     const startDate = new Date(today.getFullYear(), today.getMonth(), 1); // Start from the first day of the current month
     const endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0); // End at the last day of the current month
 
-    const dailyStartDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Start from today
-    const dailyEndDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1); // End at tomorrow
+    // const dailyStartDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Start from today
+    // const dailyEndDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1); // End at tomorrow
 
     try {
         const dailySales = await Invoice.aggregate([
-            { $match: { date: { $gte: dailyStartDate, $lt: dailyEndDate } } },
+            { $match: { date: { $gte: startDate, $lt: endDate } } },
             { $group: { _id: null, totalSales: { $sum: '$paid' } } }
         ]);
 
         const allSales = await Invoice.aggregate([
-            { $match: { date: { $lt: dailyEndDate } } },
+            { $match: { date: { $lt: endDate } } },
             { $group: { _id: null, totalSales: { $sum: '$paid' } } }
         ]);
 
         const totalSales = allSales[0].totalSales;
 
         // Return the daily sales of today and all the sales from day 1 upto now
-        res.status(200).json({ dailySales: dailySales[0].totalSales, totalSales });
+        res.status(200).json({ dailySales: dailySales[0]?.totalSales, totalSales });
     } catch (error) {
         // Handle errors here
         console.error(error);
@@ -742,8 +742,8 @@ router.get('/dailyPurchases', async (req, res) => {
     ]);
 
     const totalPurchases = allPurchases[0].totalPurchases;
-    // console.log(dailyPurchases, totalPurchases)
-    res.status(200).json({ dailyPurchases: dailyPurchases[0].totalPurchases, totalPurchases });
+    console.log(dailyPurchases, totalPurchases)
+    res.status(200).json({ dailyPurchases: dailyPurchases[0]?.totalPurchases, totalPurchases });
 });
 
 
@@ -755,81 +755,57 @@ router.get('/outOfStockMedicines', async (req, res) => {
 
 
 
-// router.get('/out-of-stock', async (req, res) => {
-//     try {
-//         // Retrieve all the drugs sold from Invoices
-//         const invoices = await Invoice.find();
-//         const drugsSold = invoices.flatMap((inv) =>
-//             inv.items.map((item) => ({
-//                 medicineName: item.medicineName,
-//                 packaging: item.packaging,
-//             }))
-//         );
-
-//         // Retrieve all the drugs in Stock
-//         const stocks = await Stock.find();
-//         const drugsInStock = stocks.flatMap((stock) =>
-//             stock.items.map((item) => ({
-//                 medicineName: item.medicineName,
-//                 packaging: item.packaging,
-//             }))
-//         );
-
-//         // Calculate the difference between drugs sold and drugs in stock
-//         const drugsOutOfStock = drugsSold.filter(
-//             (sold) =>
-//                 !drugsInStock.some(
-//                     (stock) =>
-//                         stock.medicineName === sold.medicineName &&
-//                         stock.packaging === sold.packaging
-//                 )
-//         );
-
-//         // Return the list of drugs that are out of stock
-//         res.json({ drugsOutOfStock });
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send('Server error');
-//     }
-// });
-
-
-router.get('/drugOutofStock', async (req, res) => {
+router.get('/outofstock', async (req, res) => {
     try {
-        const stockItems = await Stock.find().populate('items', 'medicineName packaging').exec();
-        const stockMap = new Map();
-        for (const stockItem of stockItems) {
-            for (const item of stockItem.items) {
-                const key = item.medicineName + '|' + item.packaging;
-                if (!stockMap.has(key)) {
-                    stockMap.set(key, {
-                        medicineName: item.medicineName,
-                        packaging: item.packaging,
-                        quantity: 0
-                    });
-                }
-                stockMap.get(key).quantity += parseInt(item.quantity);
-            }
-        }
-        const drugItems = await Drug.find().exec();
-        const drugMap = new Map();
-        for (const drugItem of drugItems) {
-            const key = drugItem.name + '|' + drugItem.packaging;
-            if (!drugMap.has(key)) {
-                drugMap.set(key, drugItem);
-            }
-        }
-        const drugOutofStock = [];
-        for (const [key, value] of stockMap.entries()) {
-            if (value.quantity <= 0) {
-                drugOutofStock.push(drugMap.get(key));
-            }
-        }
-        res.json(drugOutofStock);
+        // Retrieve all the drugs sold from Invoices
+        const invoices = await Invoice.find();
+        const drugsSold = invoices.flatMap((inv) =>
+            inv.items.map((item) => ({
+                medicineName: item.medicineName,
+                packaging: item.packaging,
+            }))
+        );
+
+        // Retrieve all the drugs in Stock
+        const stocks = await Stock.find();
+        const drugsInStock = stocks.flatMap((stock) =>
+            stock.items.map((item) => ({
+                medicineName: item.medicineName,
+                packaging: item.packaging,
+            }))
+        );
+
+        // Calculate the difference between drugs sold and drugs in stock
+        const drugsOutOfStock = drugsSold.filter(
+            (sold) =>
+                !drugsInStock.some(
+                    (stock) =>
+                        stock.medicineName === sold.medicineName &&
+                        stock.packaging === sold.packaging
+                )
+        );
+
+        // Return the list of drugs that are out of stock
+        res.json({ drugsOutOfStock });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).send('Server error');
     }
+});
+
+
+router.get('/sales-by-date', async (req, res) => {
+    const invoices = await Invoice.find();
+    const salesByDate = invoices.reduce((acc, invoice) => {
+        const date = new Date(invoice.date).toLocaleDateString();
+        const total = invoice.total;
+        if (!acc[date]) {
+            acc[date] = 0;
+        }
+        acc[date] += total;
+        return acc;
+    }, {});
+    res.json(salesByDate);
 });
 
 

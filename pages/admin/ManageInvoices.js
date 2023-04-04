@@ -2,7 +2,6 @@
 import React from 'react'
 
 import AdminLayout from '../../components/Layout/AdminLayout'
-import DrugMainContent from '../../components/contents/DrugMainContent'
 import WithAuth from '../../components/WithAuth'
 import InvoiceMainContent from '../../components/contents/InvoiceMainContent'
 

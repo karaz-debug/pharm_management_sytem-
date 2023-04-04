@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import CategoryModal from '../CategoryModal';
-import CategoryModalPop from '../Modal/CategoryModalPop';
 import SearchBar from '../SearchBar';
 import CategoryTable from '../Table/CategoryTable';
-import TableContent from '../TableContent'
 import WelcomeBanner from '../WelcomeBanner'
 
 function CategoryContent() {
@@ -42,12 +40,7 @@ function CategoryContent() {
                     </button>
 
 
-                    {addCategory && (
-                        <>
-                            <CategoryModalPop isOpen={addCategory} onClose={() => setAddCategory(false)}>
-                            </CategoryModalPop>
-                        </>
-                    )}
+
                 </div>
 
                 {/* Add Button */}

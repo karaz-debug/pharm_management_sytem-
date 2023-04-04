@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
-import StockModal from '../Modal/StockModal'
 import SearchBar from '../SearchBar'
 import StockTable from '../Table/StockTable'
-import TableContent from '../TableContent'
 
 function StockMainContent() {
     const [addStock, setaddStock] = useState(false)
-
     return (
         <div>
             <div className="flex items-center justify-between">
@@ -26,24 +23,9 @@ function StockMainContent() {
             </div>
             <hr className="my-4 border-red-500" />
             <div className="flex justify-between mb-4 ">
-
-
                 <div className="flex justify-between mb-4 space-x-4">
                     <SearchBar placeholder="By Medicine Name.." />
-
-                    <div className="float-right ">
-                        <button className="px-4 py-3 mx-4 mt-8 mb-4 space-x-3 bg-red-500 rounded-lg ">
-                            Out of Stock
-                        </button>
-                        <button className="px-4 py-3 mt-8 mb-4 bg-yellow-500 rounded-lg">
-                            Expired
-                        </button>
-
-                    </div>
                 </div>
-
-
-
             </div>
 
             <div class="flex justify-center gap-3 align-baseline">

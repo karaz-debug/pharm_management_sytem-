@@ -1,4 +1,3 @@
-import { Avatar } from '@mui/material';
 import axios from 'axios';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -10,13 +9,6 @@ const userTable = () => {
     const [usersPerPage] = useState(5);
     const [users, setusers] = useState([]);
     const [error, setError] = useState('')
-
-    console.log(users)
-
-
-
-    // console.log(users[0].active)
-
 
     useEffect(() => {
         const fetchusers = async () => {
@@ -44,58 +36,55 @@ const userTable = () => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // Activate user
-    const handleActivate = (id) => {
-        axios.put(`http://localhost:3001/admin/user/activate/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-            .then(res => {
-                if (res.status === 200) {
-                    // success, show a message or redirect to a success page
-                    console.log('successfully activated')
-                }
-            })
-            .catch(err => {
-                if (err.response.status === 401) {
-                    setError('Unauthorized: You are not logged in or do not have the admin role.');
-                } else if (err.response.status === 404) {
-                    setError('Not Found: The user entry with the specified ID does not exist.');
-                } else {
-                    setError('Something went wrong. Please try again later.');
-                }
+    const handleActivate = async (id) => {
+        try {
+
+
+            const response = await fetch(`http://localhost:3001/admin/user/activate/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
             });
 
+            if (response.ok) {
+                alert("Succesfully Activated the Users");
 
+            } else {
+                alert('Your not Authourized to Activate the User');
+            }
+
+            console.log(response)
+
+        } catch (error) {
+            console.error(error);
+        }
     }
 
 
     // Suspend a user
-    const handleSuspend = (id) => {
-        console.log(id)
-        axios.put(`http://localhost:3001/admin/user/deativate/${id}`, {
-
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-            .then(res => {
-                if (res.status === 200) {
-                    // success, show a message or redirect to a success page
-                    console.log('successfully de-activated')
-                }
-            })
-            .catch(err => {
-                if (err.response.status === 401) {
-                    setError('Unauthorized: You are not logged in or do not have the admin role.');
-                } else if (err.response.status === 404) {
-                    setError('Not Found: The user entry with the specified ID does not exist.');
-                } else {
-                    setError('Something went wrong. Please try again later.');
-                }
+    const handleSuspend = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:3001/admin/user/deativate/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
             });
+            if (response.ok) {
+                alert("Succesfully Suspended the User");
+
+            } else {
+                alert('Your not authourized to Suspend User');
+            }
+
+            console.log(response)
+
+        } catch (error) {
+            console.error(error);
+        }
     };
 
 
@@ -172,7 +161,7 @@ const userTable = () => {
 
                             <tr>
                                 <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                                    <Avatar src={'https://flowbite.com/docs/images/logo.svg'} />
+                                    {/* <Avatar src={'https://flowbite.com/docs/images/logo.svg'} /> */}
                                 </td>
                                 <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
                                     {user.name}

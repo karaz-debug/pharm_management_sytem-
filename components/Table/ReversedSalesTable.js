@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import DrugModalPop from '../Modal/DrugModalPop';
+
 
 const ReversedSalesTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
