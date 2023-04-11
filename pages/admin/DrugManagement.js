@@ -1,7 +1,5 @@
 
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
-
 import AdminLayout from '../../components/Layout/AdminLayout'
 import DrugMainContent from '../../components/contents/DrugMainContent'
 import WithAuth from '../../components/WithAuth'
